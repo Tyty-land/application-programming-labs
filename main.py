@@ -90,4 +90,3 @@ def find(profiles: list, gender: str, letter: str) -> List[str]:
 
 if __name__ == '__main__':
     main()
-    print()
