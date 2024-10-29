@@ -1,9 +1,13 @@
+import argparse
 import csv
-import re
 import os
+import re
+
 from icrawler.builtin import GoogleImageCrawler
 from typing import Tuple
-import argparse
+
+
+
 
 CONST_activ_dir = os.getcwd().replace("\\", "/").lower() + "/"
 
@@ -49,9 +53,9 @@ def create_absolut_dir(save_dir: str) -> str:
     :param save_dir: the path to the photo saving folder obtained by the command line parameter
     :return absolut_dir:
     """
-    if re.search(r"\w:/", save_dir) is None:
+    if re.search(r"\w:/+", save_dir) is None and re.search(r"\w:\\+", save_dir) is None:
         save_dir = CONST_activ_dir + save_dir
-    absolut_dir = (save_dir + "/").replace("//", "/")
+    absolut_dir = (save_dir + "/").replace("\\", "/").replace("//", "/")
     return absolut_dir
 
 
@@ -107,18 +111,24 @@ def main() -> None:
     """
     key_word, save_dir, file_annotation = get_p()
     google_crawl = GoogleImageCrawler(storage={'root_dir': f'{save_dir}image_{key_word}_dir'})
-    google_crawl.crawl(keyword=key_word, max_num=10)
+    google_crawl.crawl(keyword=key_word, max_num=50)
     writer_csv(f'{save_dir}image_{key_word}_dir', file_annotation)
+    iter_checker(file_annotation, f'{save_dir}image_{key_word}_dir')
+
+
+def iter_checker(file_annotation: str, root_dir: str) -> None:
     """
-    These two lists are needed to check the iterator for two different parameters
-    the paths to the root folder with pictures or the path to the annotation file .csv
-    should display exactly the same lists in content and size.
+    This function is designed to demonstrate the operation of the iterator in two parameters,
+     namely, the annotation file .csv or the root folder where all images are saved
+    :param file_annotation: The path or name of the annotation file .csv
+    :param root_dir: The root folder with images
+    :return None:
     """
     csv_data = []
     for i in KeywordPhotoIter(file_annotation):
         csv_data.append(i)
     dir_data = []
-    for i in KeywordPhotoIter(f'{save_dir}image_{key_word}_dir'):
+    for i in KeywordPhotoIter(root_dir):
         dir_data.append(i)
     print(csv_data)
     print(dir_data)
