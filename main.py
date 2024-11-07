@@ -1,10 +1,11 @@
 import argparse
+from typing import Tuple
+
+from icrawler.builtin import GoogleImageCrawler
+
 from iter_modul import KeywordPhotoIter
 from csv_modul import writer_csv
 from csv_modul import create_absolut_dir
-
-from icrawler.builtin import GoogleImageCrawler
-from typing import Tuple
 
 
 def get_p() -> Tuple[str, str, str]:

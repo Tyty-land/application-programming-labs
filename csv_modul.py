@@ -5,6 +5,7 @@ import re
 
 CONST_activ_dir = os.getcwd().replace("\\", "/").lower() + "/"
 
+
 def create_absolut_dir(save_dir: str) -> str:
     """
     The function checks whether a folder with photos is being created in the new directory of the current directory
@@ -15,7 +16,6 @@ def create_absolut_dir(save_dir: str) -> str:
     :param save_dir: the path to the photo saving folder obtained by the command line parameter
     :return absolut_dir: The absolute path to the corresponding file or folder
     """
-    CONST_activ_dir = os.getcwd().replace("\\", "/").lower() + "/"
     if re.search(r"\w:/+", save_dir) is None and re.search(r"\w:\\+", save_dir) is None:
         save_dir = CONST_activ_dir + save_dir
     if re.search(r"\.\w+", save_dir) is None:
