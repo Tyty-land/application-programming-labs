@@ -1,12 +1,12 @@
 import argparse
 import cv2
+from typing import Tuple
 
 from path_work_modl import clear_name_image
 from path_work_modl import create_absolut_dir
 from work_with_images import delimiter_channel
 from work_with_images import display_graph
 from work_with_images import get_data_imgs
-from typing import Tuple
 
 
 def get_p() -> Tuple[str, str]:
