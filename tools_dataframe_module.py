@@ -39,6 +39,15 @@ def writer_csv(data_imgs: List[list], data_frame: str, index_start: int) -> None
             for i_row in range(index_start, len(data_imgs)):
                 writer.writerow(data_imgs[i_row])
 
+def demonstration_of_results(data_frame: str) -> None:
+    """
+    This function outputs several DataFrame lines
+    :param data_frame: The path or name to the DataFrame (.csv)
+    :return None:
+    """
+    df = pd.read_csv(data_frame, delimiter=';')
+    print("\n", df.head(), "\n")
+
 
 def pandas_statistical_calculation(data_frame: str) -> List[list]:
     """
@@ -50,65 +59,35 @@ def pandas_statistical_calculation(data_frame: str) -> List[list]:
     data_imgs = reader_csv(data_frame)
     writer_csv(data_imgs, 'data_frame_pandas.csv', 1)
     df = pd.read_csv('data_frame_pandas.csv', delimiter=';', names=data_imgs[0])
-    statistical_list = [[df['Height:'].count(),
-                         df['Height:'].sum(),
-                         df['Height:'].mean(),
-                         df['Height:'].median(),
-                         df['Height:'].min(),
-                         df['Height:'].max(),
-                         df['Height:'].mode(),
-                         df['Height:'].abs(),
-                         df['Height:'].prod(),
-                         df['Height:'].std(),
-                         df['Height:'].var(),
-                         df['Height:'].sem(),
-                         df['Height:'].skew(),
-                         df['Height:'].kurt(),
-                         df['Height:'].quantile(),
-                         df['Height:'].cumsum(),
-                         df['Height:'].cumprod(),
-                         df['Height:'].cummax(),
-                         df['Height:'].cummin()
-                         ],
-                        [df['Width:'].count(),
-                         df['Width:'].sum(),
-                         df['Width:'].mean(),
-                         df['Width:'].median(),
-                         df['Width:'].min(),
-                         df['Width:'].max(),
-                         df['Width:'].mode(),
-                         df['Width:'].abs(),
-                         df['Width:'].prod(),
-                         df['Width:'].std(),
-                         df['Width:'].var(),
-                         df['Width:'].sem(),
-                         df['Width:'].skew(),
-                         df['Width:'].kurt(),
-                         df['Width:'].quantile(),
-                         df['Width:'].cumsum(),
-                         df['Width:'].cumprod(),
-                         df['Width:'].cummax(),
-                         df['Width:'].cummin()
-                         ],
-                        [df['Color_depth:'].count(),
-                         df['Color_depth:'].sum(),
-                         df['Color_depth:'].mean(),
-                         df['Color_depth:'].median(),
-                         df['Color_depth:'].min(),
-                         df['Color_depth:'].max(),
-                         df['Color_depth:'].mode(),
-                         df['Color_depth:'].abs(),
-                         df['Color_depth:'].prod(),
-                         df['Color_depth:'].std(),
-                         df['Color_depth:'].var(),
-                         df['Color_depth:'].sem(),
-                         df['Color_depth:'].skew(),
-                         df['Color_depth:'].kurt(),
-                         df['Color_depth:'].quantile(),
-                         df['Color_depth:'].cumsum(),
-                         df['Color_depth:'].cumprod(),
-                         df['Color_depth:'].cummax(),
-                         df['Color_depth:'].cummin()
-                         ]]
+    statistical_list = [stat_key("Height:", df), stat_key("Width:", df), stat_key("Color_depth:", df)]
     os.remove('data_frame_pandas.csv')
     return statistical_list
+
+
+def stat_key(column_name: str, df: pd) -> List[int]:
+    """
+    The function is needed to generate statistical data on the corresponding column
+    :param column_name: The name of the column from which you want to calculate statistical data
+    :param df: DataFrame formed by Pandas
+    :return statistical_list_piece: column statistics (piece)
+    """
+    statistical_list_piece = [df[column_name].count(),
+                         df[column_name].sum(),
+                         df[column_name].mean(),
+                         df[column_name].median(),
+                         df[column_name].min(),
+                         df[column_name].max(),
+                         df[column_name].mode(),
+                         df[column_name].abs(),
+                         df[column_name].prod(),
+                         df[column_name].std(),
+                         df[column_name].var(),
+                         df[column_name].sem(),
+                         df[column_name].skew(),
+                         df[column_name].kurt(),
+                         df[column_name].quantile(),
+                         df[column_name].cumsum(),
+                         df[column_name].cumprod(),
+                         df[column_name].cummax(),
+                         df[column_name].cummin()]
+    return statistical_list_piece
