@@ -133,7 +133,7 @@ class MainWindow(QMainWindow):
             else:
                 self.image_label.setPixmap(QPixmap(f"{self.current_image}"))
 
-    def resizeEvent(self, event) -> super().resizeEvent:
+    def resizeEvent(self, event):
         """
         Method for generating a resizing event
         :param event:
