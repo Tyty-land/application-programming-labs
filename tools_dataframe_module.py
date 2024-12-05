@@ -21,6 +21,7 @@ def reader_csv(data_frame: str) -> List[list]:
                 data_list[i] = data_list[i].split(";")
     return data_list
 
+
 def writer_csv(data_imgs: List[list], data_frame: str, index_start: int) -> None:
     """
     This function creates a DataFrame of images in the format (.csv)
