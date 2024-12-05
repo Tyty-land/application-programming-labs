@@ -1,5 +1,6 @@
 import csv
 import os
+import re
 
 
 class KeywordPhotoIter:
@@ -10,14 +11,15 @@ class KeywordPhotoIter:
     :param csv_or_dir_path: .csv file or root folder
     """
 
-    def __init__(self, csv_or_dir_path: str, start_or_end: int):
+    def __init__(self, csv_or_dir_path: str, start_or_end: bool):
         self.data_keyword = []
         if ".csv" in csv_or_dir_path and csv_or_dir_path != "":
             with open(csv_or_dir_path, 'r', newline='', encoding='utf-8') as file:
                 reader = csv.reader(file, delimiter=';')
                 for row in reader:
-                    self.data_keyword.append(row[1])
-                self.data_keyword.pop(0)
+                    for i in range(0, len(row)):
+                        if re.search(r"^\w:/", row[i]) is not None:
+                            self.data_keyword.append(row[i])
         elif csv_or_dir_path != "":
             self.data_keyword = os.listdir((csv_or_dir_path + "/").replace("//", "/"))
             end = len(self.data_keyword)
@@ -28,7 +30,7 @@ class KeywordPhotoIter:
                     end -= 1
                 else:
                     i += 1
-        if start_or_end == 1:
+        if start_or_end:
             self.index = len(self.data_keyword) - 1
         else:
             self.index = 0
@@ -38,13 +40,6 @@ class KeywordPhotoIter:
         return self
 
     def __next__(self):
-        if self.index < self.limit:
-            self.index += 1
-            return self.data_keyword[self.index - 1]
-        else:
-            raise StopIteration
-
-    def next(self):
         self.index += 1
         if self.index < self.limit:
             return self.data_keyword[self.index]
@@ -64,6 +59,5 @@ class KeywordPhotoIter:
     def get_current_index(self):
         return self.index
 
-    def get_elem(self, index: int):
-        if 0 <= index < self.limit:
-            return self.data_keyword[index]
+    def get_current_elem(self) -> str:
+        return self.data_keyword[self.index]

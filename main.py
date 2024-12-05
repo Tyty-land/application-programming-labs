@@ -6,6 +6,7 @@ from PyQt5 import QtCore
 
 from iter_modul import KeywordPhotoIter
 
+
 class MainWindow(QMainWindow):
     """
     This class creates the main application window,
@@ -24,7 +25,7 @@ class MainWindow(QMainWindow):
         self.dir_or_csv = ""
         self.current_image = ""
         self.Iter_imgs = KeywordPhotoIter(self.dir_or_csv, 0)
-        #Menu
+        # Menu
         self.combo_box = QComboBox(self)
         self.combo_box.addItems(['', '  path', '  .csv'])
         self.combo_box.setGeometry(int(self.frameGeometry().width() / 2) - (int(self.frameGeometry().width() / self.x) *
@@ -71,7 +72,7 @@ class MainWindow(QMainWindow):
             self.combo_line_dw[i].move(int(self.frameGeometry().width() / 2) + 75 * (i - 15),
                                        self.right_button.frameGeometry().y() - 20)
 
-    #Активная часть
+    # Активная часть
     def create_list_images(self, data_or_path_str) -> None:
         """
         This method is needed to create an iterator based on photos in a folder or on a DataFrame with paths to them.
@@ -83,7 +84,7 @@ class MainWindow(QMainWindow):
         if data_or_path_str != "" and data_or_path_str != "  path" and data_or_path_str != "  .csv":
             self.Iter_imgs = KeywordPhotoIter(self.dir_or_csv, 0)
             if self.Iter_imgs.get_current_size() != 0:
-                self.current_image = self.Iter_imgs.get_elem(0)
+                self.current_image = self.Iter_imgs.get_current_elem()
                 self.image_label.setScaledContents(True)
                 if ".csv" not in self.dir_or_csv:
                     self.image_label.setPixmap(QPixmap(f"{self.dir_or_csv}/{self.current_image}"))
@@ -117,13 +118,13 @@ class MainWindow(QMainWindow):
             if button_text == '-->':
                 if self.Iter_imgs.get_current_index() == self.Iter_imgs.get_current_size() - 1:
                     self.Iter_imgs = KeywordPhotoIter(self.dir_or_csv, 0)
-                    self.current_image = self.Iter_imgs.get_elem(0)
+                    self.current_image = self.Iter_imgs.get_current_elem()
                 else:
-                    self.current_image = self.Iter_imgs.next()
+                    self.current_image = self.Iter_imgs.__next__()
             elif button_text == '<--':
                 if self.Iter_imgs.get_current_index() == 0:
                     self.Iter_imgs = KeywordPhotoIter(self.dir_or_csv, 1)
-                    self.current_image = self.Iter_imgs.get_elem(self.Iter_imgs.get_current_size() - 1)
+                    self.current_image = self.Iter_imgs.get_current_elem()
                 else:
                     self.current_image = self.Iter_imgs.back()
             self.image_label.setScaledContents(True)
@@ -155,7 +156,7 @@ class MainWindow(QMainWindow):
         self.combo_label.move(self.combo_box.frameGeometry().x() - 70, self.combo_box.frameGeometry().y() - 5)
         if self.Iter_imgs.get_current_size() != 0:
             self.image_label.setFixedSize(round(self.frameGeometry().width() / self.x) * 400,
-                                      round(self.frameGeometry().height() / self.y) * 340)
+                                          round(self.frameGeometry().height() / self.y) * 340)
         self.image_label.move(round(self.frameGeometry().width() / 2)
                               - round(self.image_label.frameGeometry().width() / 2),
                               round(self.frameGeometry().height() / 2)
@@ -175,7 +176,7 @@ class MainWindow(QMainWindow):
         for i in range(30):
             self.combo_line_up[i].move(int(self.frameGeometry().width() / 2) + 75 * (i - 15),
                                        self.combo_box.frameGeometry().y(
-                                    ) + 10)
+                                       ) + 10)
             self.combo_line_dw[i].move(int(self.frameGeometry().width() / 2) + 75 * (i - 15),
                                        self.right_button.frameGeometry().y() - 20)
 
@@ -196,7 +197,12 @@ class MainWindow(QMainWindow):
         self.combo_box.setCurrentIndex(0)
 
 
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-app.exec()
+def main():
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    app.exec()
+
+
+if __name__ == '__main__':
+    main()
